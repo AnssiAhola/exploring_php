@@ -60,7 +60,6 @@ final class MapperTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-
     public function testMapFromGlobals(): void
     {
         $_POST = [
@@ -77,7 +76,6 @@ final class MapperTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
-
 
     public function testMapFromGlobalsWithSpecificKeysOnly(): void
     {
@@ -102,9 +100,24 @@ final class MapperTest extends TestCase
 
     public function testMapArrayType(): void
     {
-        $expected = new MyListClass([1,2,3]);
+        $expected = new MyListClass([1, 2, 3]);
         $actual = $this->mapper
             ->mapFrom(["items" => [1, 2, 3]])
+            ->mapTo(MyListClass::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testArrayItemsAreSanitized(): void
+    {
+        $expected = new MyListClass([
+            false,
+            "Lorem Ipsum",
+            3,
+            4.2
+        ]);
+        $actual = $this->mapper
+            ->mapFrom(["items" => [false, "<script>Lorem Ipsum</script>", 3, 4.2]])
             ->mapTo(MyListClass::class);
 
         $this->assertEquals($expected, $actual);

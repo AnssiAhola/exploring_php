@@ -51,22 +51,31 @@ class Mapper
         return $instance;
     }
 
-    private function castType(?ReflectionType $type, mixed $value): mixed
+    private function castType(null|ReflectionType|string $type, mixed $value): mixed
     {
         if ($type) {
             // ReflectionType::getName not documented yet
-            $typeName = $type->getName();
+            $typeName = is_string($type) ? $type : $type->getName();
             return match ($typeName) {
                 "string" => $this->config->basicSanitizationEnabled()
                     ? filter_var($value, FILTER_SANITIZE_STRING)
                     : strval($value),
-                "bool" => filter_var($value, FILTER_VALIDATE_BOOL),
-                "int" => intval($value),
-                "float" => floatval($value),
-                "array" => is_array($value) ? $value : [],
-                default => throw new Exception("Type not supported")
+                "bool", "boolean" => filter_var($value, FILTER_VALIDATE_BOOL),
+                "int", "integer" => intval($value),
+                "float", "double" => floatval($value),
+                "array" => is_array($value) ? $this->handleArray($value) : [],
+                "NULL", "null" => null,
+                default => throw new Exception("Type {$type} not supported")
             };
         }
         return $value;
+    }
+
+    private function handleArray(array $arr): array
+    {
+        return array_map(
+            fn ($item) => $this->castType(gettype($item), $item),
+            $arr
+        );
     }
 }
