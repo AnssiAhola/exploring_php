@@ -63,6 +63,7 @@ class Mapper
                 "bool" => filter_var($value, FILTER_VALIDATE_BOOL),
                 "int" => intval($value),
                 "float" => floatval($value),
+                "array" => is_array($value) ? $value : [],
                 default => throw new Exception("Type not supported")
             };
         }

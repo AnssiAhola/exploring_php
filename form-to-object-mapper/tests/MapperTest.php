@@ -99,4 +99,14 @@ final class MapperTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function testMapArrayType(): void
+    {
+        $expected = new MyListClass([1,2,3]);
+        $actual = $this->mapper
+            ->mapFrom(["items" => [1, 2, 3]])
+            ->mapTo(MyListClass::class);
+
+        $this->assertEquals($expected, $actual);
+    }
 }
