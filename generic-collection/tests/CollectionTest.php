@@ -91,6 +91,16 @@ final class CollectionTest extends TestCase
         $collection->add(0.123);
     }
 
+    public function testAfterAddingItemToEmptyCollectionCannotAddItemOfAnotherType(): void
+    {
+        $this->expectException(TypeError::class);
+
+        $item = new stdClass;
+        $collection = new Collection([]);
+        $collection->add($item);
+        $collection->add(0.123);
+    }
+
     public function testCannotAddItemOfDifferentTypeToExistingCollectionWithArrayAccess(): void
     {
         $this->expectException(TypeError::class);

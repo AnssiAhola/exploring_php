@@ -6,7 +6,7 @@ declare(strict_types=1);
 class Collection implements Countable, Iterator, ArrayAccess
 {
     protected int $position = 0;
-    protected string $itemType;
+    protected string $itemType = "";
     /**
      * @var T[]
      */
@@ -204,6 +204,9 @@ class Collection implements Countable, Iterator, ArrayAccess
     {
         if ($this->isEmpty()) {
             return;
+        }
+        if ($this->itemType === "") {
+            $this->itemType = $this->resolveItemType($this->items[0]);
         }
 
         $actualType = $this->resolveItemType($item);
