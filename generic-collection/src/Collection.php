@@ -203,10 +203,8 @@ class Collection implements Countable, Iterator, ArrayAccess
     private function validateType(mixed $item): void
     {
         if ($this->isEmpty()) {
+            $this->itemType = $this->resolveItemType($item);
             return;
-        }
-        if ($this->itemType === "") {
-            $this->itemType = $this->resolveItemType($this->items[0]);
         }
 
         $actualType = $this->resolveItemType($item);
