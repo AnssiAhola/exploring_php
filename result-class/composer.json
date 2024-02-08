@@ -1,0 +1,9 @@
+{
+    "name": "anssiahola/result-class",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    }
+}
