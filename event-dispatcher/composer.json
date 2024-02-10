@@ -1,0 +1,11 @@
+{
+    "name": "anssiahola/event-dispatcher",
+    "autoload": {
+		"psr-4": {
+			"": "src/"
+		}
+	},
+    "require": {
+        "symfony/event-dispatcher": "^6.0"
+    }
+}
